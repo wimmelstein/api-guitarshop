@@ -1,0 +1,64 @@
+openapi: 3.0.3
+info:
+  title: API Guitarshop
+  description: API Specification for Guitarshop API
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:8080'
+paths:
+  /guitars:
+    get:
+      description: "Get all guitars"
+      parameters:
+        - name: brand
+          in: query
+          required: false
+          description: Provides the brand name
+          schema:
+            type: string
+            example: Fender
+          style: simple
+        - name: model
+          in: query
+          required: false
+          description: Provides the model name
+          schema:
+            type: string
+            example: Stratocaster
+          style: simple
+      responses:
+        '200':
+          description: "List of guitars to be returned"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  oneOf:
+                    - type: object
+                    - $ref: '#/components/schemas/Guitar'
+
+      tags:
+        - guitars
+
+components:
+  schemas:
+    Guitar:
+      type: object
+      description: Guitar
+      properties:
+        brand:
+          type: string
+          example: "Fender"
+        model:
+          type: string
+          example: "Telecaster"
+        price:
+          type: number
+          format: double
+          example: 123.45
+
+
+
+
+  

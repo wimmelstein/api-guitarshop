@@ -21,8 +21,13 @@ public class GuitarController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Guitar>> getAllGuitars() {
-        return ResponseEntity.ok().body(guitarService.getAllGuitars());
+    public ResponseEntity<List<Guitar>> getAllGuitars(@RequestParam(required = false) String brand,
+                                                      @RequestParam(required = false) String model) {
+        try {
+            return ResponseEntity.ok().body(guitarService.getAllGuitars(brand, model));
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
