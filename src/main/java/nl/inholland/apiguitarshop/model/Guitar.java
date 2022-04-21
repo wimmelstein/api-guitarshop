@@ -1,11 +1,15 @@
 package nl.inholland.apiguitarshop.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 
 @Entity
-
 public class Guitar {
 
     @Id
@@ -13,7 +17,7 @@ public class Guitar {
     @GeneratedValue(generator = "guitar_seq", strategy = GenerationType.SEQUENCE)
     private Long id;
     @ManyToOne
-    @JsonBackReference
+    @JsonIgnoreProperties({"guitars"})
     private Brand brand;
     private String model;
     private double price;

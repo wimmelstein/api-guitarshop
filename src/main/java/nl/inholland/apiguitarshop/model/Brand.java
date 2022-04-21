@@ -1,6 +1,6 @@
 package nl.inholland.apiguitarshop.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,7 +23,7 @@ public class Brand {
     }
 
     @OneToMany(mappedBy = "brand")
-    @JsonManagedReference
+    @JsonIgnoreProperties({"brand"})
     private Set<Guitar> guitars = new HashSet<>();
 
     public Brand() {
