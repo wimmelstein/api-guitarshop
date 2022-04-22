@@ -2,18 +2,16 @@ package nl.inholland.apiguitarshop.service;
 
 import nl.inholland.apiguitarshop.model.Guitar;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @Service
 public class GuitarService {
 
-    private List<Guitar> guitars;
+    private final List<Guitar> guitars;
 
     public GuitarService(List<Guitar> guitars) {
         this.guitars = guitars;
@@ -30,7 +28,7 @@ public class GuitarService {
         Optional<List<Guitar>> result = Optional.ofNullable(
                 guitars.stream()
                 .filter(brandPredicate)
-                .filter(modelPredicate).collect(Collectors.toList()));
+                .filter(modelPredicate).toList());
 
         if (result.isPresent()) {
             return result.get();
