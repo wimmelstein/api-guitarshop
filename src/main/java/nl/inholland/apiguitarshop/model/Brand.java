@@ -27,7 +27,6 @@ public class Brand {
     private Set<Guitar> guitars = new HashSet<>();
 
     public Brand() {
-
     }
 
     public long getId() {

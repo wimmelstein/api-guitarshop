@@ -26,14 +26,4 @@ public class GuitarController {
             return ResponseEntity.notFound().build();
         }
     }
-
-//    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity addGuitar(@RequestBody Guitar guitar) {
-//        try {
-//            guitarService.addGuitar(guitar);
-//            return ResponseEntity.status(HttpStatus.CREATED).body(guitar);
-//        } catch (Exception e) {
-//            return ResponseEntity.badRequest().body(Collections.singletonMap("message", e.getMessage()));
-//        }
-//    }
 }

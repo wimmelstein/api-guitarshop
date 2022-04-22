@@ -4,6 +4,8 @@ import nl.inholland.apiguitarshop.model.StockItem;
 import nl.inholland.apiguitarshop.repository.StockItemRepository;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
+
 @Service
 public class StockItemService {
 
@@ -22,6 +24,10 @@ public class StockItemService {
     }
 
     public double getStockValueByGuitarId(long id) {
-        return repository.getStockValueByGuitarId(id);
+        try {
+            return repository.getStockValueByGuitarId(id);
+        } catch (Exception e) {
+            throw new EntityNotFoundException("Guitar not found");
+        }
     }
 }

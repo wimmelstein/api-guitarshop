@@ -31,30 +31,29 @@ public class MyApplicationRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        List.of(
+        List<Brand> brands = List.of(
                 new Brand("Fender"),
                 new Brand("Gibson")
-        ).forEach(brandRepository::save);
-
-
-
-        List<Guitar> guitars = new ArrayList<>(List.of(
-                new Guitar(brandRepository.findBrandByName("Fender"), "Telecaster", 1450.00 ),
-                new Guitar(brandRepository.findBrandByName("Fender"), "Stratocaster", 1750.00),
-                new Guitar(brandRepository.findBrandByName("Gibson"), "Les Paul", 2250.00 )
-        ));
-
-        guitars.forEach(
-                guitarRepository::save
         );
 
-       guitarRepository.findAll().forEach(
-              g -> stockItemRepository.save(new StockItem(g)));
+        brandRepository.saveAll(brands);
 
-        stockItemRepository.findAll().forEach(System.out::println);
-        System.out.println("--------");
+        List<Guitar> guitars = new ArrayList<>(List.of(
+                new Guitar(brandRepository.findBrandByName("Fender"), "Telecaster", 1450.00),
+                new Guitar(brandRepository.findBrandByName("Fender"), "Stratocaster", 1750.00),
+                new Guitar(brandRepository.findBrandByName("Gibson"), "Les Paul", 2250.00)
+        ));
 
-        stockItemRepository.findStockItemByQuantityLessThanEqual(25).forEach(System.out::println);
+        guitarRepository.saveAll(guitars);
+
+        guitarRepository.findAll()
+                .forEach(guitar -> stockItemRepository.save(new StockItem(guitar)));
+
+        stockItemRepository.findAll()
+                .forEach(System.out::println);
+
+        stockItemRepository.findStockItemByQuantityLessThanEqual(25)
+                .forEach(System.out::println);
 
     }
 }

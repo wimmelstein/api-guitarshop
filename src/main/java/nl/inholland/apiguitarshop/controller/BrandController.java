@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("brands")
 public class BrandController {
 
-
-    private BrandService service;
-
+    private final BrandService service;
 
     public BrandController(BrandService service) {
         this.service = service;
@@ -20,6 +18,8 @@ public class BrandController {
 
     @GetMapping
     public ResponseEntity getAllBrands() {
-        return ResponseEntity.ok().body(service.getAllBrands());
+        return ResponseEntity
+                .ok()
+                .body(service.getAllBrands());
     }
 }
