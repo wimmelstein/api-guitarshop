@@ -14,7 +14,7 @@
 	<name>api-guitarshop</name>
 	<description>Java Advanced Demo project 2022</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>8</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
