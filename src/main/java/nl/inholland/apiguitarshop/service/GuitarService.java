@@ -30,7 +30,7 @@ public class GuitarService {
         Optional<List<Guitar>> result = Optional.ofNullable(
                 guitars.stream()
                 .filter(brandPredicate)
-                .filter(modelPredicate).toList());
+                .filter(modelPredicate).collect(Collectors.toList()));
 
         if (result.isPresent()) {
             return result.get();
