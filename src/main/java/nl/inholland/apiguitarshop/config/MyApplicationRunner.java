@@ -32,7 +32,10 @@ public class MyApplicationRunner implements ApplicationRunner {
     private final BrandRepository brandRepository;
     private final UserService userService;
 
-    private final Logger LOGGER = LoggerFactory.getLogger(MyApplicationRunner.class.getName());
+    private static final String FENDER = "Fender";
+    private static final String GIBSON = "Gibson";
+
+    private final Logger logger = LoggerFactory.getLogger(MyApplicationRunner.class.getName());
 
     public MyApplicationRunner(GuitarRepository guitarRepository, StockItemRepository stockItemRepository, BrandRepository brandRepository, UserService userService) {
         this.guitarRepository = guitarRepository;
@@ -45,16 +48,16 @@ public class MyApplicationRunner implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
 
         List<Brand> brands = List.of(
-                new Brand("Fender"),
-                new Brand("Gibson")
+                new Brand(FENDER),
+                new Brand(GIBSON)
         );
 
         brandRepository.saveAll(brands);
 
         List<Guitar> guitars = new ArrayList<>(List.of(
-                new Guitar(brandRepository.findBrandByName("Fender"), "Telecaster", 3450.00),
-                new Guitar(brandRepository.findBrandByName("Fender"), "Stratocaster", 1750.00),
-                new Guitar(brandRepository.findBrandByName("Gibson"), "Les Paul", 2250.00)
+                new Guitar(brandRepository.findBrandByName(FENDER), "Telecaster", 3450.00),
+                new Guitar(brandRepository.findBrandByName(FENDER), "Stratocaster", 1750.00),
+                new Guitar(brandRepository.findBrandByName(GIBSON), "Les Paul", 2250.00)
         ));
 
         guitarRepository.saveAll(guitars);
@@ -87,6 +90,6 @@ public class MyApplicationRunner implements ApplicationRunner {
                 .getBean("requestMappingHandlerMapping", RequestMappingHandlerMapping.class);
         Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping
                 .getHandlerMethods();
-        map.forEach((key, value) -> LOGGER.info("{} {}", key, value));
+        map.forEach((key, value) -> logger.info("{} {}", key, value));
     }
 }
