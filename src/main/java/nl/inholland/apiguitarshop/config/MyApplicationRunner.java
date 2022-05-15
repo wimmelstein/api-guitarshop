@@ -1,9 +1,6 @@
 package nl.inholland.apiguitarshop.config;
 
-import nl.inholland.apiguitarshop.model.Brand;
-import nl.inholland.apiguitarshop.model.Guitar;
-import nl.inholland.apiguitarshop.model.StockItem;
-import nl.inholland.apiguitarshop.model.User;
+import nl.inholland.apiguitarshop.model.*;
 import nl.inholland.apiguitarshop.repository.BrandRepository;
 import nl.inholland.apiguitarshop.repository.GuitarRepository;
 import nl.inholland.apiguitarshop.repository.StockItemRepository;
@@ -78,6 +75,7 @@ public class MyApplicationRunner implements ApplicationRunner {
         User user = new User();
         user.setUsername("wim");
         user.setPassword("1q2w3e4r");
+        user.setRoles(List.of(Role.ROLE_USER));
         userService.add(user);
 
     }

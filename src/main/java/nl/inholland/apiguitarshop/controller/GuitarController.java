@@ -5,6 +5,7 @@ import nl.inholland.apiguitarshop.model.dto.GuitarDTO;
 import nl.inholland.apiguitarshop.service.GuitarService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class GuitarController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity createGuitar(@RequestBody GuitarDTO guitar) {
         try {
             Guitar newGuitar = guitarService.createGuitar(guitar);
