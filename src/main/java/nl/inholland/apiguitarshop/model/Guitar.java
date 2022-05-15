@@ -2,14 +2,10 @@ package nl.inholland.apiguitarshop.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 
 @Entity
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = {"brand_id", "model"})})
 public class Guitar {
 
     @Id
