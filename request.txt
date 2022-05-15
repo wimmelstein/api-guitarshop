@@ -1,0 +1,6 @@
+{
+
+	"brand" : "Fender",
+	"model": "Jem",
+	"price": 2750.00
+}
