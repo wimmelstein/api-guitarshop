@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -39,7 +40,7 @@ public class MyApplicationRunner implements ApplicationRunner {
         brandRepository.saveAll(brands);
 
         List<Guitar> guitars = new ArrayList<>(List.of(
-                new Guitar(brandRepository.findBrandByName("Fender"), "Telecaster", 1450.00),
+                new Guitar(brandRepository.findBrandByName("Fender"), "Telecaster", 3450.00),
                 new Guitar(brandRepository.findBrandByName("Fender"), "Stratocaster", 1750.00),
                 new Guitar(brandRepository.findBrandByName("Gibson"), "Les Paul", 2250.00)
         ));
@@ -55,5 +56,8 @@ public class MyApplicationRunner implements ApplicationRunner {
         stockItemRepository.findStockItemByQuantityLessThanEqual(25)
                 .forEach(System.out::println);
 
+        List<Guitar> toSort = guitarRepository.findAll();
+        Collections.sort(toSort, ( o1,  o2) -> (int) (o1.getPrice() - o2.getPrice()));
+        System.out.println(toSort);
     }
 }
