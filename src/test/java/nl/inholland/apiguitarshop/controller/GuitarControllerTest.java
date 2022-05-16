@@ -13,13 +13,14 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.containsString;
+import java.util.List;
+
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -35,24 +36,27 @@ class GuitarControllerTest {
 
 
     @Test
-    void someting() throws Exception {
+    void getAllGuitarsShouldReturnJsonArrayOfSizeOne() throws Exception {
+        when(guitarService.getAllGuitars()).thenReturn(List.of(new Guitar(new Brand("Fender"), "Jazz", 1500)));
         this.mockMvc.perform(get("/guitars"))
                 .andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString("Fender")));
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].brand.name").value("Fender"));
     }
 
     @Test
-    void other() throws Exception {
+    void createGuitarShouldReturnStatusCreatedAndOneObject() throws Exception {
         Guitar guitar = new Guitar();
-        guitar.setBrand(new Brand("Bla"));
-        guitar.setModel("Fender");
+        guitar.setBrand(new Brand("Fender"));
+        guitar.setModel("Cougar");
         GuitarDTO dto = new GuitarDTO();
         when(guitarService.createGuitar(any(GuitarDTO.class))).thenReturn(guitar);
         mockMvc.perform(post("/guitars")
                 .content(new ObjectMapper().writeValueAsString(dto))
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.brand.name").value("Bla"))
-                .andExpect(jsonPath("$.model").value("Fender"));
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.brand.name").value("Fender"))
+                .andExpect(jsonPath("$.model").value("Cougar"));
     }
 
 
