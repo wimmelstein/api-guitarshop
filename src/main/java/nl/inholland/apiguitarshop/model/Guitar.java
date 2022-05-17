@@ -17,6 +17,7 @@ public class Guitar {
     private Brand brand;
     private String model;
     private double price;
+    private final int numberOfStrings = 6;
 
 
     public Guitar() {
@@ -49,6 +50,9 @@ public class Guitar {
     }
 
     public void setPrice(double price) {
+        if (price < 0) {
+            throw new IllegalArgumentException("Price cannot be negative");
+        }
         this.price = price;
     }
 
@@ -70,5 +74,9 @@ public class Guitar {
 
     public Long getId() {
         return id;
+    }
+
+    public int getNumberOfStrings() {
+        return numberOfStrings;
     }
 }
