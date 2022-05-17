@@ -35,6 +35,9 @@ class GuitarControllerTest {
     @MockBean
     private GuitarService guitarService;
 
+    @Autowired
+    private ObjectMapper mapper;
+
     @Test
     void getAllGuitarsShouldReturnJsonArrayOfSizeOne() throws Exception {
         when(guitarService.getAllGuitars()).thenReturn(List.of(new Guitar(new Brand("Fender"), "Jazz", 1500)));
@@ -52,12 +55,10 @@ class GuitarControllerTest {
         GuitarDTO dto = new GuitarDTO();
         when(guitarService.createGuitar(any(GuitarDTO.class))).thenReturn(guitar);
         mockMvc.perform(post("/guitars")
-                .content(new ObjectMapper().writeValueAsString(dto))
+                .content(mapper.writeValueAsString(dto))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.brand.name").value("Fender"))
                 .andExpect(jsonPath("$.model").value("Cougar"));
     }
-
-
 }
