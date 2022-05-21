@@ -6,4 +6,4 @@ Feature: Everything guitars
 
   Scenario: Getting guitars with invalid token
     When the guitar endpoint is called with an invalid token
-    #Then the result is a status of 403
+    Then the result is a status of 403

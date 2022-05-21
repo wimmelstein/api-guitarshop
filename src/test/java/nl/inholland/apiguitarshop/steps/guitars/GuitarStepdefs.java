@@ -13,8 +13,10 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest(classes = CucumberContextConfig.class)
+@TestPropertySource("classpath:application-test.properties")
 @Slf4j
 public class GuitarStepdefs implements En {
 

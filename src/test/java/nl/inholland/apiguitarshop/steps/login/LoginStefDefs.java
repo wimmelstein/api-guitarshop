@@ -10,9 +10,11 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootTest(classes = CucumberContextConfig.class)
+@TestPropertySource("classpath:application-test.properties")
 public class LoginStefDefs implements En {
 
     private HttpHeaders httpHeaders;
