@@ -9,5 +9,5 @@ class ApiGuitarshopApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }
+
