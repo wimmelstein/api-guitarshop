@@ -1,7 +1,6 @@
 package nl.inholland.apiguitarshop.steps.login;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jayway.jsonpath.JsonPath;
 import io.cucumber.java8.En;
 import nl.inholland.apiguitarshop.model.dto.LoginDTO;
 import nl.inholland.apiguitarshop.steps.CucumberContextConfig;
@@ -10,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
@@ -49,18 +47,6 @@ public class LoginStefDefs implements En {
             this.token = entity.getBody();
             Assertions.assertNotNull(entity.getBody());
         });
-
-        When("^the client calls the guitar endpoint with a valid token$", () -> {
-            httpHeaders.add("Authorization", "Bearer " + token);
-            request = new HttpEntity<>(null, httpHeaders);
-            entity = restTemplate.exchange(baseUrl + port + "/guitars", HttpMethod.GET, new HttpEntity<>(null, httpHeaders), String.class);
-
-        });
-        Then("^the result is a list of guitars of size (\\d+)$", (Integer size) -> {
-            int actual = JsonPath.read(entity.getBody(), "$.size()");
-            Assertions.assertEquals(size, actual);
-        });
-
     }
 
 
