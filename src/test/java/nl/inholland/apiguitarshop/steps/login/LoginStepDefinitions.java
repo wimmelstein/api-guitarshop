@@ -16,21 +16,18 @@ import org.springframework.http.ResponseEntity;
 public class LoginStepDefinitions extends BaseStepDefinitions implements En {
 
     private final TestRestTemplate restTemplate = new TestRestTemplate();
-
     private final ObjectMapper mapper = new ObjectMapper();
-
     private ResponseEntity<String> response;
-    private HttpEntity<String> request;
 
     public LoginStepDefinitions() {
         When("^the client calls /login with correct username\\/password$", () -> {
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.add("Content-Type", "application/json");
 
-            request = new HttpEntity<String>(mapper.writeValueAsString(
+            HttpEntity<String> request = new HttpEntity<String>(mapper.writeValueAsString(
                     new LoginDTO("wim", "1q2w3e4r")),
                     httpHeaders);
-            this.response = restTemplate.postForEntity(getBaseUrl() + "/login",
+            response = restTemplate.postForEntity(getBaseUrl() + "/login",
                     request, String.class);
         });
 
