@@ -32,7 +32,7 @@ public class LoginStepDefinitions extends BaseStepDefinitions implements En {
         });
 
         Then("^the client receives a status of (\\d+)$", (Integer status) -> {
-            Assertions.assertEquals(200, response.getStatusCodeValue());
+            Assertions.assertEquals(status, response.getStatusCodeValue());
         });
 
         And("^the client receives a JWT-token$", () -> {
