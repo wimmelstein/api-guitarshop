@@ -3,11 +3,8 @@ package nl.inholland.apiguitarshop.steps.guitars;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import io.cucumber.java8.En;
-import lombok.extern.slf4j.Slf4j;
-import nl.inholland.apiguitarshop.steps.CucumberContextConfig;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
@@ -15,8 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
-@SpringBootTest(classes = CucumberContextConfig.class)
-@Slf4j
+
 public class GuitarStepdefs implements En {
 
     // Token is valid for one year , user has Role.USER

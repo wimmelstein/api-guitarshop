@@ -3,18 +3,16 @@ package nl.inholland.apiguitarshop.steps.login;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java8.En;
 import nl.inholland.apiguitarshop.model.dto.LoginDTO;
-import nl.inholland.apiguitarshop.steps.CucumberContextConfig;
+import nl.inholland.apiguitarshop.steps.BaseStepDefinitions;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-@SpringBootTest(classes = CucumberContextConfig.class)
-public class LoginStefDefs implements En {
+public class LoginStefDefs extends BaseStepDefinitions implements En {
 
     private HttpHeaders httpHeaders;
     private final RestTemplate restTemplate = new RestTemplate();
