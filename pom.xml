@@ -15,6 +15,7 @@
 	<description>Java Advanced Demo project 2022</description>
 	<properties>
 		<java.version>17</java.version>
+		<cucumber.version>7.3.3</cucumber.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -58,17 +59,20 @@
 		<dependency>
 			<groupId>io.cucumber</groupId>
 			<artifactId>cucumber-java8</artifactId>
-			<version>7.3.3</version>
+			<version>${cucumber.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.cucumber</groupId>
 			<artifactId>cucumber-spring</artifactId>
-			<version>7.3.3</version>
+			<version>${cucumber.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.cucumber</groupId>
 			<artifactId>cucumber-junit</artifactId>
-			<version>7.3.3</version>
+			<version>${cucumber.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.vintage</groupId>
