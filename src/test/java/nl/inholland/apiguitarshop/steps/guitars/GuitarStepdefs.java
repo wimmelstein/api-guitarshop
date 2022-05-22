@@ -6,6 +6,7 @@ import io.cucumber.java8.En;
 import lombok.extern.slf4j.Slf4j;
 import nl.inholland.apiguitarshop.steps.CucumberContextConfig;
 import org.junit.jupiter.api.Assertions;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -13,10 +14,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest(classes = CucumberContextConfig.class)
-@TestPropertySource("classpath:application-test.properties")
 @Slf4j
 public class GuitarStepdefs implements En {
 
@@ -27,13 +26,14 @@ public class GuitarStepdefs implements En {
     private final HttpHeaders httpHeaders = new HttpHeaders();
     private final TestRestTemplate restTemplate = new TestRestTemplate();
 
-    private final String baseUrl = "https://localhost:";
+    @Value("${nl.inholland.api.baseurl}")
+    private String baseUrl;
 
     @LocalServerPort
     private int port;
     private final ObjectMapper mapper = new ObjectMapper();
 
-    private ResponseEntity<String> entity;
+    private ResponseEntity<String> response;
     private HttpEntity<String> request;
 
     private Integer status;
@@ -42,11 +42,11 @@ public class GuitarStepdefs implements En {
         When("^I call the guitar endpoint with a valid token$", () -> {
             httpHeaders.add("Authorization", "Bearer " + VALID_TOKEN);
             request = new HttpEntity<>(null, httpHeaders);
-            entity = restTemplate.exchange(baseUrl + port + "/guitars", HttpMethod.GET, new HttpEntity<>(null, httpHeaders), String.class);
+            response = restTemplate.exchange(baseUrl + port + "/guitars", HttpMethod.GET, new HttpEntity<>(null, httpHeaders), String.class);
         });
 
         Then("^the result is a list of guitars of size (\\d+)$", (Integer size) -> {
-            int actual = JsonPath.read(entity.getBody(), "$.size()");
+            int actual = JsonPath.read(response.getBody(), "$.size()");
             Assertions.assertEquals(size, actual);
 
         });
@@ -54,8 +54,8 @@ public class GuitarStepdefs implements En {
             httpHeaders.clear();
             httpHeaders.add("Authorization", INVALID_TOKEN);
             request = new HttpEntity<>(null, httpHeaders);
-            entity = restTemplate.exchange(baseUrl + port + "/guitars", HttpMethod.GET, new HttpEntity<>(null, httpHeaders), String.class);
-            status = entity.getStatusCodeValue();
+            response = restTemplate.exchange(baseUrl + port + "/guitars", HttpMethod.GET, new HttpEntity<>(null, httpHeaders), String.class);
+            status = response.getStatusCodeValue();
         });
 
         Then("^the result is a status of (\\d+)$", (Integer code) -> {

@@ -5,22 +5,22 @@ import io.cucumber.java8.En;
 import nl.inholland.apiguitarshop.model.dto.LoginDTO;
 import nl.inholland.apiguitarshop.steps.CucumberContextConfig;
 import org.junit.jupiter.api.Assertions;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootTest(classes = CucumberContextConfig.class)
-@TestPropertySource("classpath:application-test.properties")
 public class LoginStefDefs implements En {
 
     private HttpHeaders httpHeaders;
     private final RestTemplate restTemplate = new RestTemplate();
 
-    private final String baseUrl = "https://localhost:";
+    @Value("${nl.inholland.api.baseurl}")
+    private String baseUrl;
 
     @LocalServerPort
     private int port;
