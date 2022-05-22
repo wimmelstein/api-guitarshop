@@ -5,15 +5,15 @@ import io.cucumber.java8.En;
 import nl.inholland.apiguitarshop.model.dto.LoginDTO;
 import nl.inholland.apiguitarshop.steps.BaseStepDefinitions;
 import org.junit.jupiter.api.Assertions;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
 
 public class LoginStefDefs extends BaseStepDefinitions implements En {
 
     private HttpHeaders httpHeaders;
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final TestRestTemplate restTemplate = new TestRestTemplate();
 
     private final ObjectMapper mapper = new ObjectMapper();
 
