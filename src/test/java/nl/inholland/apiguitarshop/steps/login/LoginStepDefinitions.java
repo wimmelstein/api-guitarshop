@@ -2,15 +2,18 @@ package nl.inholland.apiguitarshop.steps.login;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java8.En;
+import lombok.extern.slf4j.Slf4j;
 import nl.inholland.apiguitarshop.model.dto.LoginDTO;
 import nl.inholland.apiguitarshop.steps.BaseStepDefinitions;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 
-public class LoginStefDefs extends BaseStepDefinitions implements En {
+@Slf4j
+public class LoginStepDefinitions extends BaseStepDefinitions implements En {
 
     private HttpHeaders httpHeaders;
     private final TestRestTemplate restTemplate = new TestRestTemplate();
@@ -22,7 +25,7 @@ public class LoginStefDefs extends BaseStepDefinitions implements En {
 
     private String token;
 
-    public LoginStefDefs() {
+    public LoginStepDefinitions() {
         When("^the client calls /login with correct username\\/password$", () -> {
             httpHeaders = new HttpHeaders();
             httpHeaders.add("Content-Type", "application/json");
@@ -37,8 +40,9 @@ public class LoginStefDefs extends BaseStepDefinitions implements En {
         });
 
         And("^the client receives a JWT-token$", () -> {
-            this.token = entity.getBody();
-            Assertions.assertNotNull(entity.getBody());
+            JSONObject jsonObject = new JSONObject(entity.getBody());
+            this.token = jsonObject.getString("token");
+            Assertions.assertTrue(token.startsWith("ey"));
         });
     }
 

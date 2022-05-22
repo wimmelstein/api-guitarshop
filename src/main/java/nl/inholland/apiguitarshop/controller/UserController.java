@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
+
 @RestController
 @RequestMapping("/login")
 public class UserController {
@@ -18,7 +20,7 @@ public class UserController {
     }
 
     @PostMapping
-    public String login(@RequestBody LoginDTO login) {
-        return userService.login(login.getUsername(), login.getPassword());
+    public Object login(@RequestBody LoginDTO login) {
+        return Collections.singletonMap("token", userService.login(login.getUsername(), login.getPassword()));
     }
 }
