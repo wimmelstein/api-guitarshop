@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 @Slf4j
 public class LoginStepDefinitions extends BaseStepDefinitions implements En {
 
-    private HttpHeaders httpHeaders;
     private final TestRestTemplate restTemplate = new TestRestTemplate();
 
     private final ObjectMapper mapper = new ObjectMapper();
@@ -25,10 +24,12 @@ public class LoginStepDefinitions extends BaseStepDefinitions implements En {
 
     public LoginStepDefinitions() {
         When("^the client calls /login with correct username\\/password$", () -> {
-            httpHeaders = new HttpHeaders();
+            HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.add("Content-Type", "application/json");
 
-            request = new HttpEntity<String>(mapper.writeValueAsString(new LoginDTO("wim", "1q2w3e4r")), httpHeaders);
+            request = new HttpEntity<String>(mapper.writeValueAsString(
+                    new LoginDTO("wim", "1q2w3e4r")),
+                    httpHeaders);
             this.response = restTemplate.postForEntity(getBaseUrl() + "/login",
                     request, String.class);
         });
