@@ -5,8 +5,6 @@ import io.cucumber.java8.En;
 import nl.inholland.apiguitarshop.model.dto.LoginDTO;
 import nl.inholland.apiguitarshop.steps.BaseStepDefinitions;
 import org.junit.jupiter.api.Assertions;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +15,6 @@ public class LoginStefDefs extends BaseStepDefinitions implements En {
     private HttpHeaders httpHeaders;
     private final RestTemplate restTemplate = new RestTemplate();
 
-    @Value("${nl.inholland.api.baseurl}")
-    private String baseUrl;
-
-    @LocalServerPort
-    private int port;
     private final ObjectMapper mapper = new ObjectMapper();
 
     private ResponseEntity<String> entity;
@@ -35,7 +28,7 @@ public class LoginStefDefs extends BaseStepDefinitions implements En {
             httpHeaders.add("Content-Type", "application/json");
 
             request = new HttpEntity<String>(mapper.writeValueAsString(new LoginDTO("wim", "1q2w3e4r")), httpHeaders);
-            this.entity = restTemplate.postForEntity(baseUrl + port + "/login",
+            this.entity = restTemplate.postForEntity(getBaseUrl() + "/login",
                     request, String.class);
         });
 
