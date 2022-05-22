@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        features = "src/test/resources",
+        features = "src/test/resources/features",
         glue = "nl.inholland.apiguitarshop.steps",
         plugin = "pretty",
         publish = true)
