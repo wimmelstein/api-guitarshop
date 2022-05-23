@@ -9,3 +9,20 @@ Feature: Everything guitars
     Given I have an invalid token
     When I call the guitar endpoint
     Then the result is a status of 403
+
+  Scenario: Getting guitars with an expired token
+    Given I have an expired token
+    When I call the guitar endpoint
+    Then the result is a status of 403
+
+  Scenario: Posting guitar with user role
+    Given I have a valid token for role "user"
+    And I have a valid guitar object
+    When I make a post request to the guitar endpoint
+    Then the result is a status of 403
+
+  Scenario: Posting guitar with admin role
+    Given I have a valid token for role "admin"
+    And I have a valid guitar object
+    When I make a post request to the guitar endpoint
+    Then the result is a status of 201

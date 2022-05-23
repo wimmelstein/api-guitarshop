@@ -3,6 +3,7 @@ package nl.inholland.apiguitarshop.steps.guitars;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import io.cucumber.java8.En;
+import nl.inholland.apiguitarshop.model.dto.GuitarDTO;
 import nl.inholland.apiguitarshop.steps.BaseStepDefinitions;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -15,9 +16,11 @@ import org.springframework.http.ResponseEntity;
 public class GuitarStepdefs extends BaseStepDefinitions implements En {
 
     // Token is valid for one year , user has Role.USER
-    private static final String VALID_TOKEN_USER = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ3aW0iLCJhdXRoIjpbXSwiaWF0IjoxNjUzMTM3MjQxLCJleHAiOjE2ODQ2NzMyNDF9.aLRs7p9TQ-xTGCzt1SAP9swSmv6ob34GzBGEeRXvtXQ";
-    private static final String VALID_TOKEN_ADMIN = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ3aW0iLCJhdXRoIjpbXSwiaWF0IjoxNjUzMzA3MjA5LCJleHAiOjM1NDU0NjcyMDl9.UxTXqEEJ3U67GrcwPepMN0O4ommpVJyQnnlMtdESuTs";
+    private static final String VALID_TOKEN_USER = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiYXV0aCI6W10sImlhdCI6MTY1MzMxMTc0NiwiZXhwIjoxNjg0ODQ3NzQ2fQ.itSjs-evCYi2P7JAKwT4DY8u5RIASTghoaeQOa33v_s";
+    private static final String VALID_TOKEN_ADMIN = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOltdLCJpYXQiOjE2NTMzMTE4MjQsImV4cCI6MTY4NDg0NzgyNH0.heZJFGgEEdaUvEhbjnbK7PFfC_BfxOMIvmRq8fjvwMs";
+    private static final String EXPIRED_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiYXV0aCI6W10sImlhdCI6MTY1MzMxMTkwNSwiZXhwIjoxNjUzMzExOTA1fQ.mKFrXM15WCXVNbSFNpqYix_xsMjsH_M31hiFf-o7JXs";
     private static final String INVALID_TOKEN = "invalid";
+
 
     private final HttpHeaders httpHeaders = new HttpHeaders();
     private final TestRestTemplate restTemplate = new TestRestTemplate();
@@ -28,6 +31,7 @@ public class GuitarStepdefs extends BaseStepDefinitions implements En {
     private HttpEntity<String> request;
 
     private Integer status;
+    private GuitarDTO dto;
 
     private String token;
 
@@ -57,6 +61,20 @@ public class GuitarStepdefs extends BaseStepDefinitions implements En {
         });
         Given("^I have an invalid token$", () -> {
             token = INVALID_TOKEN;
+        });
+        Given("^I have an expired token$", () -> {
+            token = EXPIRED_TOKEN;
+        });
+        When("^I make a post request to the guitar endpoint$", () -> {
+            httpHeaders.clear();
+            httpHeaders.add("Authorization", "Bearer " + token);
+            httpHeaders.add("Content-Type", "application/json");
+            request = new HttpEntity<>(mapper.writeValueAsString(dto), httpHeaders);
+            response = restTemplate.postForEntity(getBaseUrl() + "/guitars", request, String.class);
+            status = response.getStatusCodeValue();
+        });
+        And("^I have a valid guitar object$", () -> {
+            dto = new GuitarDTO("Fender", "Cougar", 1600);
         });
     }
 }
