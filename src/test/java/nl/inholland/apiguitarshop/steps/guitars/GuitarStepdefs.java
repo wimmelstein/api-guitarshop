@@ -5,6 +5,7 @@ import com.jayway.jsonpath.JsonPath;
 import io.cucumber.java8.En;
 import nl.inholland.apiguitarshop.model.dto.GuitarDTO;
 import nl.inholland.apiguitarshop.steps.BaseStepDefinitions;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
@@ -76,6 +77,12 @@ public class GuitarStepdefs extends BaseStepDefinitions implements En {
 
         And("^I have a valid guitar object with brand \"([^\"]*)\" and model \"([^\"]*)\" and price (\\d+)$", (String brand, String model, Integer price) -> {
             dto = new GuitarDTO(brand, model, price);
+        });
+
+        And("^I validate the guitar object has an id greater than (\\d+)$", (Integer expected) -> {
+            JSONObject jsonObject = new JSONObject(response.getBody());
+            int actual = jsonObject.getInt("id");
+            Assertions.assertTrue(actual > expected);
         });
     }
 }

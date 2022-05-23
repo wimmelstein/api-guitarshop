@@ -26,3 +26,4 @@ Feature: Everything guitars
     And I have a valid guitar object with brand "Fender" and model "Jazz" and price 1600
     When I make a post request to the guitar endpoint
     Then the result is a status of 201
+    And I validate the guitar object has an id greater than 1000003
