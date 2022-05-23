@@ -15,7 +15,8 @@ import org.springframework.http.ResponseEntity;
 public class GuitarStepdefs extends BaseStepDefinitions implements En {
 
     // Token is valid for one year , user has Role.USER
-    private static final String VALID_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ3aW0iLCJhdXRoIjpbXSwiaWF0IjoxNjUzMTM3MjQxLCJleHAiOjE2ODQ2NzMyNDF9.aLRs7p9TQ-xTGCzt1SAP9swSmv6ob34GzBGEeRXvtXQ";
+    private static final String VALID_TOKEN_USER = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ3aW0iLCJhdXRoIjpbXSwiaWF0IjoxNjUzMTM3MjQxLCJleHAiOjE2ODQ2NzMyNDF9.aLRs7p9TQ-xTGCzt1SAP9swSmv6ob34GzBGEeRXvtXQ";
+    private static final String VALID_TOKEN_ADMIN = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ3aW0iLCJhdXRoIjpbXSwiaWF0IjoxNjUzMjk0ODAxLCJleHAiOjE2NTMyOTg0MDF9.Iq1Gje7tEPVELyInuPvrh3zmxY_R0FA6yvNGns3Aoc8";
     private static final String INVALID_TOKEN = "invalid";
 
     private final HttpHeaders httpHeaders = new HttpHeaders();
@@ -28,9 +29,11 @@ public class GuitarStepdefs extends BaseStepDefinitions implements En {
 
     private Integer status;
 
+    private String token;
+
     public GuitarStepdefs() {
-        When("^I call the guitar endpoint with a valid token$", () -> {
-            httpHeaders.add("Authorization", "Bearer " + VALID_TOKEN);
+        When("^I call the guitar endpoint$", () -> {
+            httpHeaders.add("Authorization", "Bearer " + token);
             request = new HttpEntity<>(null, httpHeaders);
             response = restTemplate.exchange(getBaseUrl() + "/guitars", HttpMethod.GET, new HttpEntity<>(null, httpHeaders), String.class);
         });
@@ -50,6 +53,16 @@ public class GuitarStepdefs extends BaseStepDefinitions implements En {
 
         Then("^the result is a status of (\\d+)$", (Integer code) -> {
             Assertions.assertEquals(code, status);
+        });
+        Given("^I have a valid token for role \"([^\"]*)\"$", (String role) -> {
+            switch (role) {
+                case "user" -> token = VALID_TOKEN_USER;
+                case "admin" -> token = VALID_TOKEN_ADMIN;
+                default -> throw new IllegalArgumentException("No such role");
+            }
+        });
+        Given("^I have an invalid token$", () -> {
+            token = INVALID_TOKEN;
         });
     }
 }
