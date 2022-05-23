@@ -73,8 +73,9 @@ public class GuitarStepdefs extends BaseStepDefinitions implements En {
             response = restTemplate.postForEntity(getBaseUrl() + "/guitars", request, String.class);
             status = response.getStatusCodeValue();
         });
-        And("^I have a valid guitar object$", () -> {
-            dto = new GuitarDTO("Fender", "Cougar", 1600);
+
+        And("^I have a valid guitar object with brand \"([^\"]*)\" and model \"([^\"]*)\" and price (\\d+)$", (String brand, String model, Integer price) -> {
+            dto = new GuitarDTO(brand, model, price);
         });
     }
 }

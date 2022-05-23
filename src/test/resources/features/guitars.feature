@@ -17,12 +17,12 @@ Feature: Everything guitars
 
   Scenario: Posting guitar with user role
     Given I have a valid token for role "user"
-    And I have a valid guitar object
+    And I have a valid guitar object with brand "Fender" and model "Jazz" and price 1600
     When I make a post request to the guitar endpoint
     Then the result is a status of 403
 
   Scenario: Posting guitar with admin role
     Given I have a valid token for role "admin"
-    And I have a valid guitar object
+    And I have a valid guitar object with brand "Fender" and model "Jazz" and price 1600
     When I make a post request to the guitar endpoint
     Then the result is a status of 201
