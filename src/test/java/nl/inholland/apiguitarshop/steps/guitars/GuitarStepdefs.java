@@ -16,7 +16,7 @@ public class GuitarStepdefs extends BaseStepDefinitions implements En {
 
     // Token is valid for one year , user has Role.USER
     private static final String VALID_TOKEN_USER = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ3aW0iLCJhdXRoIjpbXSwiaWF0IjoxNjUzMTM3MjQxLCJleHAiOjE2ODQ2NzMyNDF9.aLRs7p9TQ-xTGCzt1SAP9swSmv6ob34GzBGEeRXvtXQ";
-    private static final String VALID_TOKEN_ADMIN = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ3aW0iLCJhdXRoIjpbXSwiaWF0IjoxNjUzMjk0ODAxLCJleHAiOjE2NTMyOTg0MDF9.Iq1Gje7tEPVELyInuPvrh3zmxY_R0FA6yvNGns3Aoc8";
+    private static final String VALID_TOKEN_ADMIN = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ3aW0iLCJhdXRoIjpbXSwiaWF0IjoxNjUzMzA3MjA5LCJleHAiOjM1NDU0NjcyMDl9.UxTXqEEJ3U67GrcwPepMN0O4ommpVJyQnnlMtdESuTs";
     private static final String INVALID_TOKEN = "invalid";
 
     private final HttpHeaders httpHeaders = new HttpHeaders();
