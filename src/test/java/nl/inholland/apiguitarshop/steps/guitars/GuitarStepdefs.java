@@ -32,20 +32,14 @@ public class GuitarStepdefs extends BaseStepDefinitions implements En {
     private String token;
 
     public GuitarStepdefs() {
-        When("^I call the guitar endpoint$", () -> {
-            httpHeaders.add("Authorization", "Bearer " + token);
-            request = new HttpEntity<>(null, httpHeaders);
-            response = restTemplate.exchange(getBaseUrl() + "/guitars", HttpMethod.GET, new HttpEntity<>(null, httpHeaders), String.class);
-        });
-
         Then("^the result is a list of guitars of size (\\d+)$", (Integer size) -> {
             int actual = JsonPath.read(response.getBody(), "$.size()");
             Assertions.assertEquals(size, actual);
 
         });
-        When("^the guitar endpoint is called with an invalid token$", () -> {
+        When("^I call the guitar endpoint$", () -> {
             httpHeaders.clear();
-            httpHeaders.add("Authorization", INVALID_TOKEN);
+            httpHeaders.add("Authorization", "Bearer " + token);
             request = new HttpEntity<>(null, httpHeaders);
             response = restTemplate.exchange(getBaseUrl() + "/guitars", HttpMethod.GET, new HttpEntity<>(null, httpHeaders), String.class);
             status = response.getStatusCodeValue();
