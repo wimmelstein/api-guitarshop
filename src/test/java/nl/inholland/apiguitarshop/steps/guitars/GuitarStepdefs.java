@@ -37,11 +37,6 @@ public class GuitarStepdefs extends BaseStepDefinitions implements En {
     private String token;
 
     public GuitarStepdefs() {
-        Then("^the result is a list of guitars of size (\\d+)$", (Integer size) -> {
-            int actual = JsonPath.read(response.getBody(), "$.size()");
-            Assertions.assertEquals(size, actual);
-
-        });
         When("^I call the guitar endpoint$", () -> {
             httpHeaders.clear();
             httpHeaders.add("Authorization", "Bearer " + token);
@@ -50,22 +45,6 @@ public class GuitarStepdefs extends BaseStepDefinitions implements En {
             status = response.getStatusCodeValue();
         });
 
-        Then("^the result is a status of (\\d+)$", (Integer code) -> {
-            Assertions.assertEquals(code, status);
-        });
-        Given("^I have a valid token for role \"([^\"]*)\"$", (String role) -> {
-            switch (role) {
-                case "user" -> token = VALID_TOKEN_USER;
-                case "admin" -> token = VALID_TOKEN_ADMIN;
-                default -> throw new IllegalArgumentException("No such role");
-            }
-        });
-        Given("^I have an invalid token$", () -> {
-            token = INVALID_TOKEN;
-        });
-        Given("^I have an expired token$", () -> {
-            token = EXPIRED_TOKEN;
-        });
         When("^I make a post request to the guitar endpoint$", () -> {
             httpHeaders.clear();
             httpHeaders.add("Authorization", "Bearer " + token);
@@ -75,8 +54,33 @@ public class GuitarStepdefs extends BaseStepDefinitions implements En {
             status = response.getStatusCodeValue();
         });
 
+        Then("^the result is a status of (\\d+)$", (Integer code) -> {
+            Assertions.assertEquals(code, status);
+        });
+
+        Given("^I have a valid token for role \"([^\"]*)\"$", (String role) -> {
+            switch (role) {
+                case "user" -> token = VALID_TOKEN_USER;
+                case "admin" -> token = VALID_TOKEN_ADMIN;
+                default -> throw new IllegalArgumentException("No such role");
+            }
+        });
+
+        Given("^I have an invalid token$", () -> {
+            token = INVALID_TOKEN;
+        });
+
+        Given("^I have an expired token$", () -> {
+            token = EXPIRED_TOKEN;
+        });
+
         And("^I have a valid guitar object with brand \"([^\"]*)\" and model \"([^\"]*)\" and price (\\d+)$", (String brand, String model, Integer price) -> {
             dto = new GuitarDTO(brand, model, price);
+        });
+
+        Then("^the result is a list of guitars of size (\\d+)$", (Integer size) -> {
+            int actual = JsonPath.read(response.getBody(), "$.size()");
+            Assertions.assertEquals(size, actual);
         });
 
         And("^I validate the guitar object has an id greater than (\\d+)$", (Integer expected) -> {
