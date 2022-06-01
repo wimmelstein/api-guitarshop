@@ -61,6 +61,7 @@ class GuitarControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
     void getAllGuitarsShouldReturnJsonArrayOfSizeOne() throws Exception {
         when(guitarService.getAllGuitars()).thenReturn(List.of(new Guitar(new Brand("Fender"), "Jazz", 1500)));
         this.mockMvc.perform(get("/guitars"))
@@ -70,8 +71,8 @@ class GuitarControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "admin", password = "password", roles = "ADMIN")
-    void createGuitarShouldReturnStatusCreatedAndOneObject() throws Exception {
+    @WithMockUser(roles = "ADMIN")
+    void createGuitarWithRoleAdminShouldReturnStatusCreatedAndOneObject() throws Exception {
         Guitar guitar = new Guitar();
         guitar.setBrand(new Brand("Fender"));
         guitar.setModel("Cougar");
@@ -83,5 +84,15 @@ class GuitarControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.brand.name").value("Fender"))
                 .andExpect(jsonPath("$.model").value("Cougar"));
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    void createGuitarWithRoleUserWillReturnUnauthorized() throws Exception {
+        when(guitarService.createGuitar(any(GuitarDTO.class))).thenReturn(new Guitar());
+        mockMvc.perform(post("/guitars")
+                        .content("{}")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden());
     }
 }
