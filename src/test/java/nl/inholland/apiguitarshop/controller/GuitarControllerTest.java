@@ -57,7 +57,7 @@ class GuitarControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"ADMIN"})
+    @WithMockUser(username = "user", roles = {"ADMIN"})
     void createGuitarWithRoleAdminShouldReturnStatusCreatedAndOneObject() throws Exception {
         Guitar guitar = new Guitar();
         guitar.setBrand(new Brand("Fender"));

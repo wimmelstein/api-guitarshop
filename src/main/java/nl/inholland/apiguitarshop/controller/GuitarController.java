@@ -1,11 +1,14 @@
 package nl.inholland.apiguitarshop.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import nl.inholland.apiguitarshop.model.Guitar;
 import nl.inholland.apiguitarshop.model.dto.GuitarDTO;
 import nl.inholland.apiguitarshop.service.GuitarService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/guitars", produces = MediaType.APPLICATION_JSON_VALUE)
+@Slf4j
 public class GuitarController {
 
     private final GuitarService guitarService;
@@ -28,6 +32,8 @@ public class GuitarController {
 
     @GetMapping
     public ResponseEntity<List<Guitar>> getAllGuitars() {
+        UserDetails auth = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        log.info(auth.getUsername());
         try {
             return ResponseEntity.ok().body(guitarService.getAllGuitars());
         } catch (Exception e) {
