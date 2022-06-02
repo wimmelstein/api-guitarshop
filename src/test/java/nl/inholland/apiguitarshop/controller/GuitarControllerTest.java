@@ -1,6 +1,8 @@
 package nl.inholland.apiguitarshop.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import nl.inholland.apiguitarshop.annotation.WithMAdminUser;
+import nl.inholland.apiguitarshop.annotation.WithNormalUser;
 import nl.inholland.apiguitarshop.config.TestConfig;
 import nl.inholland.apiguitarshop.model.Brand;
 import nl.inholland.apiguitarshop.model.Guitar;
@@ -55,7 +57,7 @@ class GuitarControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "ADMIN")
+    @WithMAdminUser
     void createGuitarWithRoleAdminShouldReturnStatusCreatedAndOneObject() throws Exception {
         Guitar guitar = new Guitar();
         guitar.setBrand(new Brand("Fender"));
@@ -71,7 +73,7 @@ class GuitarControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "user", password = "password", roles = "USER")
+    @WithNormalUser
     void createGuitarWithRoleUserWillReturnUnauthorized() throws Exception {
         when(guitarService.createGuitar(any(GuitarDTO.class))).thenReturn(new Guitar());
         myMock.perform(post("/guitars/")
@@ -80,3 +82,4 @@ class GuitarControllerTest {
                 .andExpect(status().isForbidden());
     }
 }
+
