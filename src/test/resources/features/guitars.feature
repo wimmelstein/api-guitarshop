@@ -27,3 +27,8 @@ Feature: Everything guitars
     When I make a post request to the guitar endpoint
     Then the result is a status of 201
     And I validate the guitar object has an id greater than 1000003
+
+  Scenario: Getting guitar without token
+    Given I have no token
+    When I call the guitar endpoint
+    Then the result is a status of 403

@@ -6,8 +6,14 @@ import nl.inholland.apiguitarshop.service.GuitarService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -38,5 +44,17 @@ public class GuitarController {
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(e.getCause().getMessage());
         }
+    }
+
+    @GetMapping(value = "/test", params = {"param1", "param2"})
+    public ResponseEntity<Object> getTwoParams(@RequestParam(required = true) String param1
+            , @RequestParam(required = true) String param2) {
+        return ResponseEntity.ok(Collections.singletonMap("params", 2));
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping(value = "/test", params = {"param1"})
+    public ResponseEntity<Object> getOnlyOneParam(@RequestParam(required = true) String param1) {
+        return ResponseEntity.ok(Collections.singletonMap("params", 1));
     }
 }

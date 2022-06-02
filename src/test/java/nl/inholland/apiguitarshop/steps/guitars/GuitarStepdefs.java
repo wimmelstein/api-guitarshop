@@ -38,15 +38,13 @@ public class GuitarStepdefs extends BaseStepDefinitions implements En {
 
     public GuitarStepdefs() {
         When("^I call the guitar endpoint$", () -> {
-            httpHeaders.clear();
-            httpHeaders.add("Authorization", "Bearer " + token);
             request = new HttpEntity<>(null, httpHeaders);
             response = restTemplate.exchange(getBaseUrl() + "/guitars", HttpMethod.GET, new HttpEntity<>(null, httpHeaders), String.class);
             status = response.getStatusCodeValue();
         });
 
         When("^I make a post request to the guitar endpoint$", () -> {
-            httpHeaders.clear();
+
             httpHeaders.add("Authorization", "Bearer " + token);
             httpHeaders.add("Content-Type", "application/json");
             request = new HttpEntity<>(mapper.writeValueAsString(dto), httpHeaders);
@@ -59,20 +57,25 @@ public class GuitarStepdefs extends BaseStepDefinitions implements En {
         });
 
         Given("^I have a valid token for role \"([^\"]*)\"$", (String role) -> {
+            httpHeaders.clear();
             switch (role) {
                 case "user" -> token = VALID_TOKEN_USER;
                 case "admin" -> token = VALID_TOKEN_ADMIN;
                 default -> throw new IllegalArgumentException("No such role");
             }
+            httpHeaders.add("Authorization", "Bearer " + token);
         });
 
         Given("^I have an invalid token$", () -> {
-            token = INVALID_TOKEN;
+            httpHeaders.clear();
+            httpHeaders.add("Authorization", "Bearer " + INVALID_TOKEN);
         });
 
         Given("^I have an expired token$", () -> {
-            token = EXPIRED_TOKEN;
+            httpHeaders.clear();
+            httpHeaders.add("Authorization", "Bearer " + EXPIRED_TOKEN);
         });
+
 
         And("^I have a valid guitar object with brand \"([^\"]*)\" and model \"([^\"]*)\" and price (\\d+)$", (String brand, String model, Integer price) -> {
             dto = new GuitarDTO(brand, model, price);
@@ -87,6 +90,9 @@ public class GuitarStepdefs extends BaseStepDefinitions implements En {
             JSONObject jsonObject = new JSONObject(response.getBody());
             int actual = jsonObject.getInt("id");
             Assertions.assertTrue(actual > expected);
+        });
+        Given("^I have no token$", () -> {
+            httpHeaders.clear();
         });
     }
 }
