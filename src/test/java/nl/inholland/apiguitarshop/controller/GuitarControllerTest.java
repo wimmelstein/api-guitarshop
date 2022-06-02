@@ -1,7 +1,6 @@
 package nl.inholland.apiguitarshop.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import nl.inholland.apiguitarshop.annotation.WithAdminUser;
 import nl.inholland.apiguitarshop.config.TestConfig;
 import nl.inholland.apiguitarshop.model.Brand;
 import nl.inholland.apiguitarshop.model.Guitar;
@@ -58,7 +57,7 @@ class GuitarControllerTest {
     }
 
     @Test
-    @WithAdminUser
+    @WithMockUser(roles = {"ADMIN"})
     void createGuitarWithRoleAdminShouldReturnStatusCreatedAndOneObject() throws Exception {
         Guitar guitar = new Guitar();
         guitar.setBrand(new Brand("Fender"));
