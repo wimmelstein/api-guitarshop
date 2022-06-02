@@ -2,7 +2,6 @@ package nl.inholland.apiguitarshop.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.inholland.apiguitarshop.annotation.WithAdminUser;
-import nl.inholland.apiguitarshop.annotation.WithNormalUser;
 import nl.inholland.apiguitarshop.config.TestConfig;
 import nl.inholland.apiguitarshop.model.Brand;
 import nl.inholland.apiguitarshop.model.Guitar;
@@ -11,6 +10,7 @@ import nl.inholland.apiguitarshop.service.GuitarService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -34,10 +34,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(GuitarController.class)
 @Import(GuitarController.class)
 @ContextConfiguration(classes = TestConfig.class)
+@AutoConfigureMockMvc(addFilters = false)
 class GuitarControllerTest {
 
     @Autowired
-    private MockMvc myMock;
+    private MockMvc mockMvc;
 
     @MockBean
     private GuitarService guitarService;
@@ -50,7 +51,7 @@ class GuitarControllerTest {
     @WithMockUser(roles = {"USER"})
     void getAllGuitarsShouldReturnJsonArrayOfSizeOne() throws Exception {
         when(guitarService.getAllGuitars()).thenReturn(List.of(new Guitar(new Brand("Fender"), "Jazz", 1500)));
-        myMock.perform(get("/guitars/"))
+        mockMvc.perform(get("/guitars/"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].brand.name").value("Fender"));
@@ -64,7 +65,7 @@ class GuitarControllerTest {
         guitar.setModel("Cougar");
         GuitarDTO dto = new GuitarDTO();
         when(guitarService.createGuitar(any(GuitarDTO.class))).thenReturn(guitar);
-        myMock.perform(post("/guitars")
+        mockMvc.perform(post("/guitars")
                         .content(mapper.writeValueAsString(dto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
@@ -72,14 +73,5 @@ class GuitarControllerTest {
                 .andExpect(jsonPath("$.model").value("Cougar"));
     }
 
-    @Test
-    @WithNormalUser
-    void createGuitarWithRoleUserWillReturnUnauthorized() throws Exception {
-        when(guitarService.createGuitar(any(GuitarDTO.class))).thenReturn(new Guitar());
-        myMock.perform(post("/guitars/")
-                        .content("{}")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isForbidden());
-    }
 }
 
