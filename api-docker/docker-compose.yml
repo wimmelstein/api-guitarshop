@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  api:
+    image: tomcat:9.0.73-jdk17-temurin-jammy
+    volumes:
+      - "${PWD}/webapp:/usr/local/tomcat/webapps/"
+      - "${PWD}/resources/logback.xml/:/usr/local/tomcat/webapps/WEB-INF/classes/logback.xml"
+      - "${PWD}/resources/guitarshop.p12/:/usr/local/tomcat/webapps/WEB-INF/classes/guitarshop.p12"
+    ports:
+      - "8443:8443"
+    env_file:
+      - guitarshop.env
+networks:
+  network:
