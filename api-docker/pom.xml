@@ -37,6 +37,7 @@
                                     <directory>${project.basedir}/../guitarshop/target/webapp</directory>
                                 </resource>
                             </resources>
+                            <includeEmptyDirs>true</includeEmptyDirs>
                         </configuration>
                     </execution>
                 </executions>
