@@ -1,5 +1,9 @@
 package nl.inholland.apiguitarshop.filter;
 
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import nl.inholland.apiguitarshop.jwt.JwtTokenProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -7,10 +11,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
@@ -32,7 +32,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             }
         } catch (ResponseStatusException rse) {
             SecurityContextHolder.clearContext();
-            response.sendError(rse.getRawStatusCode(), rse.getMessage());
+            response.sendError(rse.getStatusCode().value(), rse.getMessage());
             return;
         }
 

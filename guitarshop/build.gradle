@@ -1,0 +1,74 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.0.5'
+    id 'io.spring.dependency-management' version '1.1.0'
+    id 'war'
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web:3.0.5'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.0.5'
+    implementation 'org.springframework.boot:spring-boot-starter-security:3.0.5'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator:3.0.5'
+    implementation 'com.h2database:h2:2.1.212'
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    implementation 'org.projectlombok:lombok:1.18.24'
+    implementation 'org.projectlombok:lombok:1.18.24'
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.5'
+    testImplementation 'io.cucumber:cucumber-java8:7.3.3'
+    testImplementation 'io.cucumber:cucumber-spring:7.3.3'
+    testImplementation 'io.cucumber:cucumber-junit:7.3.3'
+    testImplementation 'org.junit.vintage:junit-vintage-engine:5.8.2'
+}
+
+war {
+    manifest {
+        attributes('Main-Class': 'nl.inholland.apiguitarshop.ApiGuitarshopApplication')
+    }
+}
+
+group = 'nl.inholland.api'
+description = 'guitarshop'
+version '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+repositories {
+    mavenCentral()
+}
+
+task explodedWar(type: Copy, dependsOn: war) {
+    def warFileName = tasks['war'].name
+    def zipFile = file('build/libs/' + warFileName)
+    def outputDir = file("exploded")
+
+    from zipTree(zipFile)
+    into outputDir
+}
+
+configurations {
+    cucumberRuntime {
+        extendsFrom testImplementation
+    }
+}
+
+task cucumberCli() {
+    dependsOn assemble, testClasses
+    doLast {
+        javaexec {
+            main = "io.cucumber.core.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = [
+                    '--plugin', 'pretty',
+                    '--plugin', 'html:target/cucumber-report.html',
+                    '--glue', 'nl.inholland.apiguitarshop.steps',
+                    'src/test/resources']
+        }
+    }
+}
+

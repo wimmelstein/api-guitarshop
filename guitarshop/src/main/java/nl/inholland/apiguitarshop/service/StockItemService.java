@@ -1,10 +1,9 @@
 package nl.inholland.apiguitarshop.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import nl.inholland.apiguitarshop.model.StockItem;
 import nl.inholland.apiguitarshop.repository.StockItemRepository;
 import org.springframework.stereotype.Service;
-
-import javax.persistence.EntityNotFoundException;
 
 @Service
 public class StockItemService {

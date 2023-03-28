@@ -1,5 +1,6 @@
 package nl.inholland.apiguitarshop.config;
 
+import jakarta.transaction.Transactional;
 import nl.inholland.apiguitarshop.model.Brand;
 import nl.inholland.apiguitarshop.model.Guitar;
 import nl.inholland.apiguitarshop.model.Role;
@@ -21,7 +22,6 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
